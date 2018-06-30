@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 /**
  * Array based storage for Resumes
@@ -19,20 +18,26 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        return Arrays.stream(storage, 0, size)
-                .filter(r -> r.toString().equals(uuid))
-                .findFirst().orElse(null);
+        Resume result = null;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                result = storage[i];
+                break;
+            }
+        }
+        return result;
     }
 
     void delete(String uuid) {
-        int index = IntStream.range(0, size)
-                .filter(i -> uuid.equals(storage[i].toString()))
-                .findFirst().orElse(-1);
-
-        if (index > -1) {
-            IntStream.range(index, size - 1).forEach(i -> storage[i] = storage[i + 1]);
-            storage[size - 1] = null;
-            size--;
+        for (int index = 0; index < size; index++) {
+            if (storage[index].toString().equals(uuid)) {
+                for (int j = index; j < size - 1; j++) {
+                    storage[j] = storage[j + 1];
+                }
+                storage[size - 1] = null;
+                size--;
+                break;
+            }
         }
     }
 
