@@ -1,5 +1,7 @@
 import java.util.Arrays;
 
+import static java.util.stream.IntStream.range;
+
 /**
  * Array based storage for Resumes
  */
@@ -13,28 +15,51 @@ public class ArrayStorage {
         size = 0;
     }
 
+    int getResumeIndex(String uuid) {
+        return range(0, size)
+                .filter(i -> uuid.equals(storage[i].toString()))
+                .findFirst().orElse(-1);
+    }
+
     void save(Resume resume) {
+        if (getResumeIndex(resume.uuid) >= 0) {
+            System.out.println("The resume is already in the storage");
+            return;
+        }
+        if (size == storage.length) {
+            return;
+        }
         storage[size] = resume;
         size++;
     }
 
-    Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                return storage[i];
-            }
+    void update(Resume resume) {
+        int index;
+        if ((index = getResumeIndex(resume.uuid)) >= 0) {
+            storage[index] = resume;
+        } else {
+            System.out.println("No such resume in the storage");
         }
-        return null;
+    }
+
+    Resume get(String uuid) {
+        int index;
+        if ((index = getResumeIndex(uuid)) >= 0) {
+            return storage[index];
+        } else {
+            System.out.println("No such resume in the storage");
+            return null;
+        }
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                storage[i] = storage[size - 1];
-                storage[size - 1] = null;
-                size--;
-                break;
-            }
+        int index;
+        if ((index = getResumeIndex(uuid)) >= 0) {
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+        } else {
+            System.out.println("No such resume in the storage");
         }
     }
 
