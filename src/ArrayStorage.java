@@ -15,18 +15,19 @@ public class ArrayStorage {
         size = 0;
     }
 
-    int getResumeIndex(String uuid) {
+    private int getIndex(String uuid) {
         return range(0, size)
                 .filter(i -> uuid.equals(storage[i].toString()))
                 .findFirst().orElse(-1);
     }
 
     void save(Resume resume) {
-        if (getResumeIndex(resume.uuid) >= 0) {
+        if (getIndex(resume.uuid) >= 0) {
             System.out.println("The resume is already in the storage");
             return;
         }
         if (size == storage.length) {
+            System.out.println("Storage overflow");
             return;
         }
         storage[size] = resume;
@@ -35,7 +36,7 @@ public class ArrayStorage {
 
     void update(Resume resume) {
         int index;
-        if ((index = getResumeIndex(resume.uuid)) >= 0) {
+        if ((index = getIndex(resume.uuid)) >= 0) {
             storage[index] = resume;
         } else {
             System.out.println("No such resume in the storage");
@@ -44,7 +45,7 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         int index;
-        if ((index = getResumeIndex(uuid)) >= 0) {
+        if ((index = getIndex(uuid)) >= 0) {
             return storage[index];
         } else {
             System.out.println("No such resume in the storage");
@@ -54,7 +55,7 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int index;
-        if ((index = getResumeIndex(uuid)) >= 0) {
+        if ((index = getIndex(uuid)) >= 0) {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
