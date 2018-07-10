@@ -1,3 +1,7 @@
+package ru.javawebinar.basejava.storage;
+
+import ru.javawebinar.basejava.model.Resume;
+
 import java.util.Arrays;
 
 import static java.util.stream.IntStream.range;
@@ -10,7 +14,7 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[CAPACITY];
     private int size;
 
-    void clear() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
@@ -21,8 +25,8 @@ public class ArrayStorage {
                 .findFirst().orElse(-1);
     }
 
-    void save(Resume resume) {
-        if (getIndex(resume.uuid) >= 0) {
+    public void save(Resume resume) {
+        if (getIndex(resume.getUuid()) >= 0) {
             System.out.println("The resume is already in the storage");
             return;
         }
@@ -34,16 +38,16 @@ public class ArrayStorage {
         size++;
     }
 
-    void update(Resume resume) {
+    public void update(Resume resume) {
         int index;
-        if ((index = getIndex(resume.uuid)) >= 0) {
+        if ((index = getIndex(resume.getUuid())) >= 0) {
             storage[index] = resume;
         } else {
             System.out.println("No such resume in the storage");
         }
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         int index;
         if ((index = getIndex(uuid)) >= 0) {
             return storage[index];
@@ -53,7 +57,7 @@ public class ArrayStorage {
         }
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int index;
         if ((index = getIndex(uuid)) >= 0) {
             storage[index] = storage[size - 1];
@@ -67,11 +71,11 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 }
