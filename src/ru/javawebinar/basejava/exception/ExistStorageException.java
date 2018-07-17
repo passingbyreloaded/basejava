@@ -3,6 +3,6 @@ package ru.javawebinar.basejava.exception;
 public class ExistStorageException extends StorageException {
 
     public ExistStorageException(String uuid) {
-        super("Resume alreday exists", uuid);
+        super("Resume already exists", uuid);
     }
 }
