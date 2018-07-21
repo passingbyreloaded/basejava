@@ -24,4 +24,5 @@ public class ArrayStorage extends AbstractArrayStorage{
                 .filter(i -> uuid.equals(storage[i].toString()))
                 .findFirst().orElse(-1);
     }
+
 }
