@@ -3,28 +3,26 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void insertElement(Resume resume, int index) {
-        if (size == 0) {
-            storage[size] = resume;
-        } else {
-            int indexForInsert = index * (-1) - 1;
-            System.arraycopy(storage, indexForInsert, storage, indexForInsert + 1, size - indexForInsert);
-            storage[indexForInsert] = resume;
+    protected void fillDeletedElement(int index) {
+        int numMoved = size - index - 1;
+        if (numMoved > 0) {
+            System.arraycopy(storage, index + 1, storage, index, numMoved);
         }
     }
 
     @Override
-    protected void fillDeletedElement(int index) {
-        IntStream.range(index, size - 1).forEach(i -> storage[i] = storage[i + 1]);
+    protected void insertElement(Resume r, int index) {
+        int insertIdx = -index - 1;
+        System.arraycopy(storage, insertIdx, storage, insertIdx + 1, size - insertIdx);
+        storage[insertIdx] = r;
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }

@@ -7,30 +7,36 @@ import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
 
-    private final Map<String, Resume> storage = new HashMap();
+    private final Map<String, Resume> map = new HashMap();
+
 
     @Override
-    protected int getIndex(String uuid) {
-        return 0;
-    }
-
-    @Override
-    protected Resume getElement(int index) {
+    protected Object getSearchKey(String uuid) {
         return null;
     }
 
     @Override
-    protected void deleteElement(int index) {
+    protected void doUpdate(Resume r, Object searchKey) {
 
     }
 
     @Override
-    protected void addElement(Resume resume, int index) {
+    protected boolean isExist(Object searchKey) {
+        return false;
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
 
     }
 
     @Override
-    protected void updateElement(Resume resume, int index) {
+    protected Resume doGet(Object searchKey) {
+        return null;
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
 
     }
 

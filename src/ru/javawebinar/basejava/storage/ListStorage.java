@@ -8,49 +8,56 @@ import java.util.stream.IntStream;
 
 public class ListStorage extends AbstractStorage {
 
-    private final List<Resume> storage = new ArrayList();
+    private List<Resume> list = new ArrayList<>();
 
     @Override
-    public int size() {
-        return storage.size();
+    protected Integer getSearchKey(String uuid) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    protected void doUpdate(Resume r, Object searchKey) {
+        list.set((Integer) searchKey, r);
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        list.add(r);
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return list.get((Integer) searchKey);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        list.remove(((Integer) searchKey).intValue());
     }
 
     @Override
     public void clear() {
-        storage.clear();
-    }
-
-    @Override
-    protected int getIndex(String uuid) {
-        return IntStream.range(0,storage.size())
-                .filter(i -> storage.get(i).getUuid().equals(uuid))
-                .findFirst().orElse(-1);
-    }
-
-    @Override
-    protected Resume getElement(int index) {
-        return storage.get(index);
-    }
-
-    @Override
-    protected void deleteElement(int index) {
-        storage.remove(index);
-    }
-
-    @Override
-    protected void addElement(Resume resume, int index) {
-        storage.add(resume);
-    }
-
-    @Override
-    protected void updateElement(Resume resume, int index) {
-        storage.set(index, resume);
+        list.clear();
     }
 
     @Override
     public Resume[] getAll() {
-        return storage.toArray(new Resume[storage.size()]);
+        return list.toArray(new Resume[list.size()]);
     }
 
+    @Override
+    public int size() {
+        return list.size();
+    }
 
 }

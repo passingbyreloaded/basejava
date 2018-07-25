@@ -10,16 +10,17 @@ import static java.util.stream.IntStream.range;
 public class ArrayStorage extends AbstractArrayStorage{
 
     @Override
-    protected void insertElement(Resume resume, int index) {
-        storage[size] = resume;
-    }
-
-    @Override
     protected void fillDeletedElement(int index) {
         storage[index] = storage[size - 1];
     }
 
-    protected int getIndex(String uuid) {
+    @Override
+    protected void insertElement(Resume r, int index) {
+        storage[size] = r;
+    }
+
+    @Override
+    protected Integer getSearchKey(String uuid) {
         return range(0, size)
                 .filter(i -> uuid.equals(storage[i].toString()))
                 .findFirst().orElse(-1);

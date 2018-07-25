@@ -7,11 +7,10 @@ import java.util.Arrays;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
-    protected static final int CAPACITY = 10000;
-    protected Resume[] storage = new Resume[CAPACITY];
-    protected int size;
+    protected static final int STORAGE_LIMIT = 10000;
+    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int size = 0;
 
-    @Override
     public int size() {
         return size;
     }
@@ -22,37 +21,46 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getElement(int index) {
-        return storage[index];
+    protected void doUpdate(Resume r, Object index) {
+        storage[(Integer) index] = r;
+    }
+
+    /**
+     * @return array, contains only Resumes in storage (without null)
+     */
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     @Override
-    protected void deleteElement(int index) {
-        fillDeletedElement(index);
+    protected void doSave(Resume r, Object index) {
+        if (size == STORAGE_LIMIT) {
+            throw new StorageException("Storage overflow", r.getUuid());
+        } else {
+            insertElement(r, (Integer) index);
+            size++;
+        }
+    }
+
+    @Override
+    public void doDelete(Object index) {
+        fillDeletedElement((Integer) index);
         storage[size - 1] = null;
         size--;
     }
 
-    @Override
-    protected void addElement(Resume resume, int index) {
-        if (size == storage.length) {
-            throw new StorageException("Storage overflow", resume.getUuid());
-        }
-        insertElement(resume, index);
-        size++;
+    public Resume doGet(Object index) {
+        return storage[(Integer) index];
     }
 
     @Override
-    protected void updateElement(Resume resume, int index) {
-        storage[index] = resume;
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
     }
-
-    @Override
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
-    protected abstract void insertElement(Resume resume, int index);
 
     protected abstract void fillDeletedElement(int index);
+
+    protected abstract void insertElement(Resume r, int index);
+
+    protected abstract Integer getSearchKey(String uuid);
 }
