@@ -1,9 +1,13 @@
 package ru.javawebinar.basejava.storage;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
@@ -28,8 +32,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+//    public Resume[] getAll() {
+//        return Arrays.copyOfRange(storage, 0, size);
+//    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> result = Arrays.asList(Arrays.copyOfRange(storage, 0, size));
+        Collections.sort(result, Comparator.comparing(Resume::getFullName));
+        return result;
     }
 
     @Override
