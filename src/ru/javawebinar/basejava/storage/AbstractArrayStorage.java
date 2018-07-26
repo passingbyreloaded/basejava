@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -29,20 +28,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[(Integer) index] = r;
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-//    public Resume[] getAll() {
-//        return Arrays.copyOfRange(storage, 0, size);
-//    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> result = Arrays.asList(Arrays.copyOfRange(storage, 0, size));
-        Collections.sort(result, Comparator.comparing(Resume::getFullName));
-        return result;
-    }
-
     @Override
     protected void doSave(Resume r, Object index) {
         if (size == STORAGE_LIMIT) {
@@ -58,6 +43,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         fillDeletedElement((Integer) index);
         storage[size - 1] = null;
         size--;
+    }
+
+    @Override
+    protected List<Resume> doCopyAll() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     public Resume doGet(Object index) {

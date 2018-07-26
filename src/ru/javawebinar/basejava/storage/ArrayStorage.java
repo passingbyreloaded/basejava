@@ -22,7 +22,7 @@ public class ArrayStorage extends AbstractArrayStorage{
     @Override
     protected Integer getSearchKey(String uuid) {
         return range(0, size)
-                .filter(i -> uuid.equals(storage[i].toString()))
+                .filter(i -> uuid.equals(storage[i].getUuid()))
                 .findFirst().orElse(-1);
     }
 
