@@ -4,10 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.util.DateUtil;
 
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +28,23 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3 = new Resume(UUID_3, "Betty");
     private static final String UUID_4 = "uuid4";
     private static final Resume RESUME_4 = new Resume(UUID_4, "Anna");
+
+    static {
+        RESUME_1.getContacts().put(ContactType.MAIL,"123@mail.ru");
+        RESUME_1.getContacts().put(ContactType.PHONE,"3365566");
+        RESUME_1.getSections().put(SectionType.PERSONAL, new ListSection(Arrays.asList("nice", "responsible")));
+
+        RESUME_2.getContacts().put(ContactType.MAIL,"333@mail.ru");
+        RESUME_2.getContacts().put(ContactType.PHONE,"33333333");
+        RESUME_2.getSections().put(SectionType.ACHIEVEMENT, new TextSection("java developer"));
+
+        RESUME_3.getContacts().put(ContactType.MOBILE,"900033333333");
+        List<Position> list = new ArrayList<>();
+        list.add(new Position(DateUtil.of(2010, Month.APRIL), DateUtil.of(2012, Month.AUGUST), "engineer", null));
+        List<Organization> organizations = new ArrayList<>();
+        organizations.add(new Organization("BIT", "bit.com", list));
+        RESUME_3.getSections().put(SectionType.EDUCATION, new OrganizationSection(organizations));
+    }
 
     @Before
     public void setUp() throws Exception {
