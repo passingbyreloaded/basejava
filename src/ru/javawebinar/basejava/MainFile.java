@@ -26,18 +26,17 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
-    public static void recursivePrint(File dir){
+    public static void recursivePrint(File dir) {
         File[] list = dir.listFiles();
         if (list != null) {
             for (File file : list) {
-                if (file.isDirectory()){
+                if (file.isFile()) {
+                    System.out.println("    File: " + file.getName());
+                } else if (file.isDirectory()) {
+                    System.out.println("Directory: " + file.getName());
                     recursivePrint(file);
-                }
-                else {
-                    System.out.println(file.getName());
                 }
             }
         }
