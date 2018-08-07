@@ -15,6 +15,12 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     private Path directory;
 
+    protected SerializationStrategy strategy;
+
+    public void setStrategy(SerializationStrategy strategy) {
+        this.strategy = strategy;
+    }
+
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
 
     protected abstract Resume doRead(InputStream is) throws IOException;

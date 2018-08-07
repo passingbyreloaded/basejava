@@ -10,7 +10,13 @@ import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
+    protected SerializationStrategy strategy;
+
     private File directory;
+
+    public void setStrategy(SerializationStrategy strategy) {
+        this.strategy = strategy;
+    }
 
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
 
