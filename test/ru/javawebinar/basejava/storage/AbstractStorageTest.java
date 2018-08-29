@@ -55,6 +55,9 @@ public abstract class AbstractStorageTest {
 //                new OrganizationSection(
 //                        new Organization("Organization2", "http://Organization2.ru",
 //                                new Organization.Position(2015, Month.JANUARY, "position1", "content1"))));
+
+        R4.addContact(ContactType.PHONE, "44444");
+        R4.addContact(ContactType.SKYPE, "Skype");
     }
 
     @Before
@@ -119,6 +122,9 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() throws Exception {
         Resume resume = new Resume(UUID_1, "abc");
+        resume.addContact(ContactType.MAIL, "mail1@google.com");
+        resume.addContact(ContactType.SKYPE, "NewSkype");
+        resume.addContact(ContactType.MOBILE, "+7 921 222-22-22");
         storage.update(resume);
         assertTrue(resume.equals(storage.get(UUID_1)));
     }
