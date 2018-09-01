@@ -5,8 +5,7 @@ import org.junit.Test;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -34,10 +33,10 @@ public abstract class AbstractStorageTest {
     static {
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
-//        R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
-//        R1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
-//        R1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
-//        R1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
+        R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+        R1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
+        R1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
+        R1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
 //        R1.addSection(SectionType.EXPERIENCE,
 //                new OrganizationSection(
 //                        new Organization("Organization11", "http://Organization11.ru",
@@ -58,6 +57,7 @@ public abstract class AbstractStorageTest {
 
         R4.addContact(ContactType.PHONE, "44444");
         R4.addContact(ContactType.SKYPE, "Skype");
+        R4.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment2", "Achivment3", "Achivment4"));
     }
 
     @Before
@@ -125,6 +125,7 @@ public abstract class AbstractStorageTest {
         resume.addContact(ContactType.MAIL, "mail1@google.com");
         resume.addContact(ContactType.SKYPE, "NewSkype");
         resume.addContact(ContactType.MOBILE, "+7 921 222-22-22");
+        resume.addSection(SectionType.PERSONAL, new TextSection("data2"));
         storage.update(resume);
         assertTrue(resume.equals(storage.get(UUID_1)));
     }
