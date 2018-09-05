@@ -70,21 +70,21 @@ public class MyDataStreamSerializer implements StreamSerializer {
             Resume resume = new Resume(uuid, fullName);
             int contactsSize = dis.readInt();
             for (int i = 0; i < contactsSize; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
+                resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             int sectionsSize = dis.readInt();
             for (int i = 0; i < sectionsSize; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 String className = dis.readUTF();
                 if (className.equals("TextSection")) {
-                    resume.addSection(sectionType, new TextSection(dis.readUTF()));
+                    resume.setSection(sectionType, new TextSection(dis.readUTF()));
                 } else if (className.equals("ListSection")) {
                     List<String> list = new ArrayList<>();
                     int listSize = dis.readInt();
                     for (int j = 0; j < listSize; j++) {
                         list.add(dis.readUTF());
                     }
-                    resume.addSection(sectionType, new ListSection(list));
+                    resume.setSection(sectionType, new ListSection(list));
                 } else if (className.equals("OrganizationSection")) {
                     int organizationList = dis.readInt();
                     List<Organization> organizations = new ArrayList<>();
@@ -102,7 +102,7 @@ public class MyDataStreamSerializer implements StreamSerializer {
                         }
                         organizations.add(new Organization(new Link(name, url.equals("") ? null : url), positions));
                     }
-                    resume.addSection(sectionType, new OrganizationSection(organizations));
+                    resume.setSection(sectionType, new OrganizationSection(organizations));
                 }
             }
             // TODO implements sections
